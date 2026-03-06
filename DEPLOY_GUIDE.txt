@@ -1,0 +1,21 @@
+SI.FA. QC v2 – pacchetto pronto per pubblicazione online
+
+Pubblicazione consigliata: Netlify
+
+Passi:
+1. Crea un account su Netlify.
+2. Premi "Add new site".
+3. Scegli "Deploy manually".
+4. Carica questo pacchetto ZIP oppure il contenuto della cartella.
+5. Quando il sito è online, aprilo da Safari su iPhone.
+6. Premi Condividi > Aggiungi alla schermata Home.
+
+Alternativa: Vercel
+1. Crea un account su Vercel.
+2. Crea nuovo progetto.
+3. Carica questa cartella.
+4. Pubblica.
+5. Apri il link in Safari e aggiungi alla Home.
+
+Nota:
+Su iPhone la PWA si installa correttamente solo da un sito online in HTTPS.
