@@ -1,0 +1,1 @@
+window.SUPABASE_URL="https://oqzlhrclvgiwctfgldbu.supabase.co";window.SUPABASE_KEY="REPLACE_WITH_PUBLISHABLE_KEY";

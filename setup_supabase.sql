@@ -1,0 +1,1 @@
+create table if not exists qc_pallets(id bigint generated always as identity primary key,container_no text,pallet_no int,brand text);
