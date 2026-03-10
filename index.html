@@ -1,1 +1,381 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>SI.FA QC Login</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script></head><body><div class="wrap"><div class="card"><h2>Login SI.FA QC</h2><input id="email" placeholder="email"><input id="password" type="password" placeholder="password"><button onclick="login()">Login</button><p id="msg"></p></div></div><script>const client=supabase.createClient(window.SUPABASE_URL,window.SUPABASE_KEY);async function login(){const email=document.getElementById("email").value;const password=document.getElementById("password").value;const{data,error}=await client.auth.signInWithPassword({email,password});if(error){document.getElementById("msg").innerText=error.message;}else{window.location="app.html";}}</script></body></html>
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>SI.FA. QC v2</title>
+  <meta name="theme-color" content="#0b2e66" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="logo_sifa.jpg" />
+  <style>
+    :root{
+      --navy:#0b2e66; --gold:#c7a318; --bg:#f5f7fb; --card:#fff;
+      --text:#1e2430; --muted:#6a7280; --line:#dde3ec; --danger:#b42318;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .app{max-width:980px;margin:0 auto;padding:14px 14px 80px}
+    .topbar{display:flex;align-items:center;gap:12px;background:var(--card);padding:12px;border-radius:18px;box-shadow:0 6px 20px rgba(11,46,102,.08);position:sticky;top:10px;z-index:10}
+    .logo{width:58px;height:58px;border-radius:14px;object-fit:contain;background:#fff}
+    .title h1{font-size:1.15rem;margin:0;color:var(--navy)}
+    .title p{margin:2px 0 0;color:var(--muted);font-size:.92rem}
+    .pill{margin-left:auto;background:#eef3ff;color:var(--navy);padding:8px 10px;border-radius:999px;font-size:.85rem;font-weight:700}
+    .grid{display:grid;gap:14px;margin-top:14px}
+    .card{background:var(--card);border-radius:18px;padding:14px;box-shadow:0 6px 20px rgba(11,46,102,.08)}
+    .section-title{margin:0 0 10px;font-size:1rem;color:var(--navy)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media (max-width:760px){.row,.row3{grid-template-columns:1fr}}
+    label{font-size:.86rem;color:var(--muted);display:block;margin-bottom:6px}
+    input, select, textarea, button{font:inherit}
+    input, select, textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+    textarea{min-height:92px;resize:vertical}
+    button{border:none;border-radius:14px;padding:12px 14px;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--navy);color:#fff}
+    .btn-secondary{background:#eef3ff;color:var(--navy)}
+    .btn-gold{background:var(--gold);color:#fff}
+    .btn-danger{background:var(--danger);color:#fff}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .muted{color:var(--muted)}
+    .pallet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .pallet{padding:14px;border-radius:16px;border:1px solid var(--line);background:#fff;text-align:center;font-weight:700}
+    .pallet.done{background:#ecfdf3;border-color:#abefc6;color:#067647}
+    .pallet.active{outline:3px solid #d9e7ff}
+    .photos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media (max-width:760px){.photos{grid-template-columns:1fr}}
+    .photo-box{border:1px dashed var(--line);border-radius:16px;padding:10px;text-align:center;background:#fafcff}
+    .preview{width:100%;height:180px;object-fit:cover;border-radius:12px;background:#eef2f8}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef3ff;color:var(--navy);font-weight:700;font-size:.85rem}
+    .estimate{padding:12px;border-radius:14px;background:#fff8e8;border:1px solid #f0ddb0}
+    .list{display:grid;gap:10px}
+    .record{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}
+    .small{font-size:.85rem}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <img src="logo_sifa.jpg" alt="Logo SI.FA." class="logo" />
+    <div class="title">
+      <h1>SI.FA. QC v2</h1>
+      <p>Controllo qualità frutta • mobile-first • 21 pallet fissi</p>
+    </div>
+    <div class="pill">PWA v2</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2 class="section-title">1. Dati container</h2>
+      <div class="row">
+        <div><label>Numero container</label><input id="containerNo" placeholder="Es. ABCD1234567"></div>
+        <div><label>Data controllo</label><input id="controlDate" type="date"></div>
+      </div>
+      <div class="row3" style="margin-top:10px">
+        <div><label>Prodotto</label>
+          <select id="product">
+            <option>Ananas</option>
+            <option>Melone giallo</option>
+          </select>
+        </div>
+        <div><label>Marca</label><input id="brand" placeholder="Es. Sweet Diamond"></div>
+        <div><label>Operatore</label><input id="operator" placeholder="Nome operatore"></div>
+      </div>
+      <div class="button-row" style="margin-top:12px">
+        <button class="btn-primary" id="newContainerBtn">Crea / Aggiorna container</button>
+        <button class="btn-secondary" id="saveBtn">Salva dati</button>
+        <button class="btn-gold" id="pdfBtn">PDF / Stampa</button>
+      </div>
+      <p class="muted small" style="margin:10px 0 0">Container con 21 pallet fissi. Ogni pallet ha 3 foto.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">2. Mappa pallet</h2>
+      <div id="palletGrid" class="pallet-grid"></div>
+      <p class="muted small" style="margin-top:10px">Bianco = non controllato • Verde = controllato</p>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">3. Scheda pallet <span id="selectedPalletBadge" class="badge">Pallet 1</span></h2>
+      <div class="row3">
+        <div><label>Lotto</label><input id="lotto" placeholder="Lotto"></div>
+        <div><label>Calibro</label><input id="calibro" placeholder="Es. 6 / 7 / 9"></div>
+        <div><label>Codice colore</label>
+          <select id="colorCode">
+            <option value="">Seleziona</option>
+            <option value="1-1/2">1-1/2 → mezzo colore indietro</option>
+            <option value="1/2">1/2 → mezzo colore</option>
+            <option value="1/2-2">1/2-2 → mezzo colore avanti</option>
+            <option value="2">2 → frutti arancio</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row3" style="margin-top:10px">
+        <div><label>Brix</label><input id="brix" placeholder="Es. 14.5"></div>
+        <div><label>Consistenza</label><input id="consistenza" placeholder="Es. Buona"></div>
+        <div><label>Stato corona</label><input id="corona" placeholder="Es. Buona / Disidratata"></div>
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <div><label>Difetti esterni</label><textarea id="difettiEsterni" placeholder="Macchie, colpi, ammaccature..."></textarea></div>
+        <div><label>Note QC</label><textarea id="noteQC" placeholder="Osservazioni operative"></textarea></div>
+      </div>
+
+      <h3 class="section-title" style="margin-top:14px">Foto pallet (3 foto)</h3>
+      <div class="photos">
+        <div class="photo-box">
+          <img id="preview1" class="preview" alt="">
+          <label style="margin-top:8px">Foto 1 – vista esterna</label>
+          <input id="photo1" type="file" accept="image/*" capture="environment">
+        </div>
+        <div class="photo-box">
+          <img id="preview2" class="preview" alt="">
+          <label style="margin-top:8px">Foto 2 – lato / cassa</label>
+          <input id="photo2" type="file" accept="image/*" capture="environment">
+        </div>
+        <div class="photo-box">
+          <img id="preview3" class="preview" alt="">
+          <label style="margin-top:8px">Foto 3 – interno / taglio</label>
+          <input id="photo3" type="file" accept="image/*" capture="environment">
+        </div>
+      </div>
+
+      <div class="estimate" style="margin-top:12px">
+        <strong>Stima automatica colore:</strong>
+        <span id="estimateText">nessuna analisi eseguita</span>
+        <div class="button-row" style="margin-top:10px">
+          <button class="btn-secondary" id="analyzeBtn">Analizza foto 1</button>
+          <button class="btn-primary" id="savePalletBtn">Salva pallet</button>
+          <button class="btn-danger" id="clearPalletBtn">Pulisci pallet</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">4. Archivio locale</h2>
+      <div id="archive" class="list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'sifa_qc_v2_data';
+const TOTAL_PALLETS = 21;
+let data = loadData();
+let selectedPallet = 1;
+
+function defaultData() {
+  return {
+    containerNo: '',
+    controlDate: new Date().toISOString().slice(0,10),
+    product: 'Ananas',
+    brand: '',
+    operator: '',
+    pallets: Array.from({length: TOTAL_PALLETS}, (_,i)=>({
+      palletNo: i+1, lotto:'', calibro:'', colorCode:'', brix:'', consistenza:'',
+      corona:'', difettiEsterni:'', noteQC:'', photos:['','',''], estimate:''
+    }))
+  };
+}
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData(); }
+  catch(e) { return defaultData(); }
+}
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  renderArchive(); renderPalletGrid();
+}
+function setTopFields() {
+  document.getElementById('containerNo').value = data.containerNo || '';
+  document.getElementById('controlDate').value = data.controlDate || '';
+  document.getElementById('product').value = data.product || 'Ananas';
+  document.getElementById('brand').value = data.brand || '';
+  document.getElementById('operator').value = data.operator || '';
+}
+function syncTopFields() {
+  data.containerNo = document.getElementById('containerNo').value.trim();
+  data.controlDate = document.getElementById('controlDate').value;
+  data.product = document.getElementById('product').value;
+  data.brand = document.getElementById('brand').value.trim();
+  data.operator = document.getElementById('operator').value.trim();
+}
+function renderPalletGrid() {
+  const grid = document.getElementById('palletGrid');
+  grid.innerHTML = '';
+  data.pallets.forEach(p => {
+    const done = !!(p.colorCode || p.photos.some(Boolean) || p.noteQC || p.lotto);
+    const div = document.createElement('button');
+    div.className = 'pallet' + (done ? ' done' : '') + (selectedPallet === p.palletNo ? ' active':'');
+    div.textContent = 'Pallet ' + p.palletNo;
+    div.onclick = () => { selectedPallet = p.palletNo; renderSelectedPallet(); renderPalletGrid(); };
+    grid.appendChild(div);
+  });
+}
+function renderSelectedPallet() {
+  const p = data.pallets[selectedPallet-1];
+  document.getElementById('selectedPalletBadge').textContent = 'Pallet ' + selectedPallet;
+  ['lotto','calibro','colorCode','brix','consistenza','corona','difettiEsterni','noteQC'].forEach(id => {
+    document.getElementById(id).value = p[id] || '';
+  });
+  document.getElementById('estimateText').textContent = p.estimate || 'nessuna analisi eseguita';
+  [1,2,3].forEach(n => { document.getElementById('preview'+n).src = p.photos[n-1] || ''; });
+}
+function saveSelectedPallet() {
+  const p = data.pallets[selectedPallet-1];
+  ['lotto','calibro','colorCode','brix','consistenza','corona','difettiEsterni','noteQC'].forEach(id => {
+    p[id] = document.getElementById(id).value;
+  });
+  saveData();
+  alert('Pallet ' + selectedPallet + ' salvato.');
+}
+function clearSelectedPallet() {
+  if (!confirm('Pulire il pallet ' + selectedPallet + '?')) return;
+  data.pallets[selectedPallet-1] = {
+    palletNo:selectedPallet, lotto:'', calibro:'', colorCode:'', brix:'', consistenza:'',
+    corona:'', difettiEsterni:'', noteQC:'', photos:['','',''], estimate:''
+  };
+  saveData();
+  renderSelectedPallet();
+}
+function renderArchive() {
+  const el = document.getElementById('archive');
+  const completed = data.pallets.filter(p => p.colorCode || p.photos.some(Boolean) || p.noteQC || p.lotto);
+  if (!completed.length) { el.innerHTML = '<div class="record muted">Nessun pallet salvato ancora.</div>'; return; }
+  el.innerHTML = completed.map(p => `
+    <div class="record">
+      <strong>Pallet ${p.palletNo}</strong> • <span class="badge">${p.colorCode || 'senza codice'}</span><br>
+      <span class="small muted">Lotto: ${p.lotto || '-'} • Calibro: ${p.calibro || '-'} • Foto: ${p.photos.filter(Boolean).length}/3</span><br>
+      <span class="small">${p.noteQC || ''}</span>
+    </div>
+  `).join('');
+}
+function fileToDataURL(file, cb) {
+  const r = new FileReader();
+  r.onload = e => cb(e.target.result);
+  r.readAsDataURL(file);
+}
+function attachPhotoInput(inputId, previewId, index) {
+  document.getElementById(inputId).addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    fileToDataURL(file, url => {
+      data.pallets[selectedPallet-1].photos[index] = url;
+      document.getElementById(previewId).src = url;
+      saveData();
+    });
+  });
+}
+function analyzeImageAndEstimate() {
+  const imgSrc = data.pallets[selectedPallet-1].photos[0];
+  if (!imgSrc) { alert('Carica prima la Foto 1.'); return; }
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 120; canvas.height = 120;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, 120, 120);
+    const pixels = ctx.getImageData(0,0,120,120).data;
+    let green = 0, yellow = 0, orange = 0;
+    for (let i=0; i<pixels.length; i+=4) {
+      const r = pixels[i], g = pixels[i+1], b = pixels[i+2];
+      if (r < 40 && g < 40 && b < 40) continue;
+      const max = Math.max(r,g,b), min = Math.min(r,g,b);
+      if (max - min < 18) continue;
+      if (g > r && g > b) green++;
+      else if (r > 160 && g > 140 && b < 120) yellow++;
+      else if (r > 160 && g > 90 && g < 170 && b < 100) orange++;
+    }
+    const total = Math.max(1, green + yellow + orange);
+    const yg = (yellow + orange) / total;
+    let code = '1-1/2';
+    if (orange / total > 0.50 || yg > 0.85) code = '2';
+    else if (yg > 0.65) code = '1/2-2';
+    else if (yg > 0.40) code = '1/2';
+    const confidence = Math.round(Math.max(green, yellow + orange, orange) / total * 100);
+    const text = `${code} • confidenza ${confidence}%`;
+    data.pallets[selectedPallet-1].estimate = text;
+    document.getElementById('estimateText').textContent = text;
+    saveData();
+  };
+  img.src = imgSrc;
+}
+function escapeHtml(v){
+  return String(v).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+function printPdf() {
+  syncTopFields(); saveData();
+  const completed = data.pallets.filter(p => p.colorCode || p.photos.some(Boolean) || p.noteQC || p.lotto);
+  let html = `
+  <html><head><title>QC PDF</title>
+  <style>
+    body{font-family:Arial,sans-serif;padding:24px;color:#111}
+    .head{display:flex;align-items:center;gap:18px;border-bottom:2px solid #0b2e66;padding-bottom:14px;margin-bottom:18px}
+    .head img{width:90px;height:90px;object-fit:contain}
+    h1{margin:0;color:#0b2e66;font-size:24px}
+    .meta{font-size:14px;color:#444;line-height:1.5}
+    .page{page-break-after:always;margin-bottom:20px}
+    .photos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+    .photos img{width:100%;height:180px;object-fit:cover;border:1px solid #ccc;border-radius:8px}
+    .code{display:inline-block;background:#eef3ff;color:#0b2e66;padding:8px 12px;border-radius:999px;font-weight:bold}
+    .box{border:1px solid #ddd;border-radius:10px;padding:14px}
+    .small{font-size:13px;color:#555}
+  </style></head><body>
+  <div class="head">
+    <img src="logo_sifa.jpg">
+    <div>
+      <h1>SI.FA. Srl – Controllo Qualità</h1>
+      <div class="meta">
+        Container: <strong>${escapeHtml(data.containerNo || '-')}</strong><br>
+        Data: <strong>${escapeHtml(data.controlDate || '-')}</strong><br>
+        Prodotto: <strong>${escapeHtml(data.product || '-')}</strong> • Marca: <strong>${escapeHtml(data.brand || '-')}</strong><br>
+        Operatore: <strong>${escapeHtml(data.operator || '-')}</strong>
+      </div>
+    </div>
+  </div>`;
+  if (!completed.length) html += '<p>Nessun pallet compilato.</p>';
+  completed.forEach(p => {
+    html += `
+      <div class="page">
+        <div class="box">
+          <h2 style="margin-top:0">Pallet ${p.palletNo}</h2>
+          <p><span class="code">${escapeHtml(p.colorCode || 'N/D')}</span></p>
+          <p class="small">
+            Lotto: <strong>${escapeHtml(p.lotto || '-')}</strong> •
+            Calibro: <strong>${escapeHtml(p.calibro || '-')}</strong> •
+            Brix: <strong>${escapeHtml(p.brix || '-')}</strong> •
+            Consistenza: <strong>${escapeHtml(p.consistenza || '-')}</strong> •
+            Corona: <strong>${escapeHtml(p.corona || '-')}</strong>
+          </p>
+          <p><strong>Stima automatica:</strong> ${escapeHtml(p.estimate || '-')}</p>
+          <p><strong>Difetti esterni:</strong> ${escapeHtml(p.difettiEsterni || '-')}</p>
+          <p><strong>Note QC:</strong> ${escapeHtml(p.noteQC || '-')}</p>
+          <div class="photos">
+            ${(p.photos[0] ? `<img src="${p.photos[0]}">` : '<div></div>')}
+            ${(p.photos[1] ? `<img src="${p.photos[1]}">` : '<div></div>')}
+            ${(p.photos[2] ? `<img src="${p.photos[2]}">` : '<div></div>')}
+          </div>
+        </div>
+      </div>`;
+  });
+  html += '</body></html>';
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(()=>win.print(), 600);
+}
+document.getElementById('newContainerBtn').onclick = () => { syncTopFields(); saveData(); alert('Container aggiornato.'); };
+document.getElementById('saveBtn').onclick = () => { syncTopFields(); saveData(); alert('Dati container salvati.'); };
+document.getElementById('pdfBtn').onclick = printPdf;
+document.getElementById('savePalletBtn').onclick = saveSelectedPallet;
+document.getElementById('clearPalletBtn').onclick = clearSelectedPallet;
+document.getElementById('analyzeBtn').onclick = analyzeImageAndEstimate;
+attachPhotoInput('photo1','preview1',0);
+attachPhotoInput('photo2','preview2',1);
+attachPhotoInput('photo3','preview3',2);
+setTopFields(); renderPalletGrid(); renderSelectedPallet(); renderArchive();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
